@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ASTRAL WAVE | Global Leaders in Maritime Solutions</title>
+<meta name="description" content="Astral Wave delivers world-class crew management, technical assistance, vessel inspections, and dry-dock services." />
+<meta name="theme-color" content="#071224" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+
+<style>
+/* ============================
+   BRAND PALETTE
+   ============================ */
+:root{
+  --navy-1000:#020913;
+  --navy-950:#071224; /* header surface */
+  --navy-900:#0b1b33;
+  --navy-800:#0e2a4a;
+  --navy-700:#123560;
+  --navy-600:#18477c;
+  --sky-400:#4cc9f0;
+  --sky-300:#72d6ff;
+  --sky-200:#b9e7ff;
+  --sand-50:#f6f9ff;
+
+  --ink-900:#0f172a; --ink-700:#334155; --ink-600:#475569; --ink-500:#64748b; --white:#fff;
+
+  --radius:18px;
+  --header-h:78px;
+  --shadow-lg:0 24px 48px rgba(0,0,0,.14);
+  --shadow-md:0 12px 24px rgba(0,0,0,.10);
+  --glass-border:1px solid rgba(255,255,255,.16);
+
+  --floating-logo-size: clamp(72px, 20vw, 300px); /* ~300px max */
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+  color:var(--ink-900); background:var(--sand-50); line-height:1.7;
+  background-image:
+    radial-gradient(1px 1px at 20% 10%, rgba(0,0,0,.025) 1px, transparent 1px),
+    radial-gradient(1px 1px at 80% 30%, rgba(0,0,0,.02) 1px, transparent 1px);
+  background-size: 24px 24px, 20px 20px;
+}
+img{max-width:100%; display:block}
+a{color:inherit}
+.container{max-width:1200px; margin-inline:auto; padding-inline:24px}
+h1,h2,h3{font-family:"Playfair Display", serif; color:var(--navy-800); margin:0 0 10px}
+section{padding:96px 0; position:relative; overflow:hidden}
+.section-title{ text-align:center; margin-bottom:56px }
+.section-title h2{font-size:clamp(1.9rem, 2.6vw, 2.7rem); position:relative; display:inline-block; padding-bottom:10px}
+.section-title h2:after{content:""; position:absolute; left:50%; transform:translateX(-50%); bottom:-6px; width:72px; height:3px; background:linear-gradient(90deg, var(--sky-300), var(--navy-700)); border-radius:2px}
+
+/* ============================
+   HEADER (glassy, non-blending) + FLOATING LOGO
+   ============================ */
+.header{
+  position:fixed; inset:0 0 auto 0; height:var(--header-h); z-index:1000;
+  background:rgba(7,18,36,.92);
+  backdrop-filter:saturate(140%) blur(10px);
+  border-bottom:var(--glass-border);
+  transition:transform .45s ease, background .25s ease, height .25s ease;
+  color:#e6f2ff;
+}
+.header.scrolled{ background:rgba(7,18,36,.97); height:64px; box-shadow:0 6px 30px rgba(0,0,0,.32) }
+.header.hide{ transform:translateY(-100%) }
+
+.nav{ display:flex; align-items:center; justify-content:space-between; height:100% }
+.brand{ display:flex; align-items:center; gap:10px; text-decoration:none }
+/* Put the logo on a glass plate for guaranteed contrast */
+.brand__plate{
+  display:grid; place-items:center;
+  padding:4px 8px; border-radius:12px;
+  background:linear-gradient(180deg, rgba(255,255,255,.96), rgba(255,255,255,.82));
+  box-shadow:0 6px 18px rgba(0,0,0,.18);
+  border:1px solid rgba(0,0,0,.04);
+}
+.brand__img{ width:118px; height:auto; object-fit:contain; display:block } /* UPDATE: fits your provided logo */
+.brand__name{ display:none } /* logo image only */
+
+.nav__links{display:flex; gap:26px; align-items:center}
+.nav__links a{ text-decoration:none; font-weight:800; color:#e6f2ff; letter-spacing:.2px; position:relative; padding:6px 2px; opacity:.92 }
+.nav__links a:hover{ opacity:1 }
+.nav__links a:after{content:""; position:absolute; left:0; bottom:0; width:0; height:2px; background:linear-gradient(90deg, var(--sky-400), var(--sky-200)); transition:width .25s}
+.nav__links a:hover:after, .nav__links a.is-active:after{ width:100% }
+.nav__cta{ padding:10px 16px; border-radius:999px; text-decoration:none; font-weight:900; color:#0a1a2e; background:linear-gradient(90deg, var(--sky-400), var(--sky-200)); box-shadow:var(--shadow-md) }
+
+.nav__toggle{ display:none; border:none; background:transparent; font-size:22px; color:#e6f2ff }
+@media (max-width:900px){
+  .nav__links{ position:fixed; inset:var(--header-h) 0 0 0; background:rgba(2,9,19,.96); flex-direction:column; gap:24px; padding:32px; opacity:0; pointer-events:none; transition:opacity .25s }
+  .nav__links.open{ opacity:1; pointer-events:auto }
+  .nav__cta{ display:none } .nav__toggle{ display:block }
+}
+
+/* Floating logo only (shows when header hides) */
+.floating-logo{
+  position:fixed; left:18px; top:18px; z-index:900;
+  width:var(--floating-logo-size); height:auto;
+  opacity:0; transform:translateY(-20px) scale(.9);
+  transition:opacity .35s ease, transform .35s ease;
+  pointer-events:none;
+  filter: drop-shadow(0 12px 28px rgba(0,0,0,.45));
+}
+.floating-logo.show{ opacity:1; transform:translateY(0) scale(1) }
+@media (max-width:900px){ .floating-logo{ left:12px; top:12px } }
+
+/* ============================
+   HERO (slower particles + pointer interaction)
+   ============================ */
+.hero{ min-height:100svh; padding: calc(var(--header-h) + 60px) 0 140px; color:#eef6ff;
+  background: linear-gradient(180deg, var(--navy-900), var(--navy-1000));
+  text-align:center; position:relative; isolation:isolate }
+.hero__bg{ position:absolute; inset:0; z-index:-1; overflow:hidden }
+#hero-canvas{ position:absolute; inset:0; width:100%; height:100%; display:block }
+.hero__orb{ position:absolute; width:360px; height:360px; border-radius:50%;
+  background:radial-gradient(closest-side, rgba(76,201,240,.28), rgba(76,201,240,0));
+  filter: blur(12px); mix-blend-mode:screen; animation:orb 22s ease-in-out infinite }
+.hero__orb.o1{ left:-80px; top:18%; animation-delay:-6s }
+.hero__orb.o2{ right:-120px; top:42% }
+@keyframes orb{ 0%,100%{ transform:translate(0,0) } 50%{ transform:translate(80px, -40px) } }
+
+.hero h1{ font-size:clamp(2.6rem, 5.2vw, 4.4rem); margin-bottom:16px; color:#eaf4ff }
+.hero p.lead{ max-width:820px; margin:0 auto 28px; color:#d8e9ff; font-size:clamp(1.06rem,1.6vw,1.25rem) }
+.cta-row{ display:flex; gap:16px; justify-content:center; flex-wrap:wrap }
+.btn{ display:inline-flex; align-items:center; gap:10px; padding:14px 22px; border-radius:999px; font-weight:900; text-decoration:none; transition: transform .2s ease, box-shadow .2s ease }
+.btn--primary{ color:#0a1a2e; background:linear-gradient(90deg, var(--sky-400), var(--sky-200)); box-shadow:0 10px 24px rgba(76,201,240,.3) }
+.btn--ghost{ color:#e5f1ff; border:1px solid rgba(255,255,255,.35) }
+.btn:where(:hover,:focus-visible){ transform:translateY(-2px) }
+
+.reveal{ opacity:0; transform:translateY(24px); transition:opacity .7s ease, transform .7s ease }
+.reveal.in{ opacity:1; transform:translateY(0) }
+
+/* ============================
+   STATS / SERVICES / REACH / FLEET
+   ============================ */
+.stats{ background:linear-gradient(180deg, #f7fbff, #eef6ff) }
+.stats-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:24px }
+@media (max-width:900px){ .stats-grid{ grid-template-columns:repeat(2,1fr) } }
+.stat{ text-align:center; padding:28px 14px; border-radius:var(--radius); background:#fff; box-shadow:var(--shadow-md) }
+.stat h3{ font-size:2.4rem; margin:0; color:var(--navy-700) }
+.stat p{ margin:8px 0 0; color:var(--ink-600); font-weight:600 }
+
+#services{ background:#fff }
+.services-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:24px }
+@media (max-width:1100px){ .services-grid{ grid-template-columns:repeat(2,1fr) } }
+@media (max-width:680px){ .services-grid{ grid-template-columns:1fr } }
+.card{ background:#fff; border:1px solid #e7eef8; border-radius:18px; padding:28px; box-shadow:0 10px 24px rgba(0,0,0,.06); transform-style:preserve-3d; transition: box-shadow .25s ease, transform .25s ease }
+.card:hover{ box-shadow:0 18px 40px rgba(0,0,0,.10) }
+.card .icon{ font-size:38px; color:var(--sky-400); margin-bottom:14px; transform:translateZ(24px) }
+.card h3{ margin:6px 0 8px; font-size:1.25rem }
+.card p{ color:var(--ink-600); margin:0 }
+
+#reach{ background:linear-gradient(180deg, #ffffff, #f1f6fb) }
+.map-wrap{ position:relative; border-radius:20px; overflow:hidden; box-shadow:var(--shadow-lg) }
+.map-wrap img{ width:100%; height:auto }
+.map-wrap .pulse{ position:absolute; width:12px; height:12px; border-radius:50%; background:var(--sky-400); box-shadow:0 0 0 0 rgba(76,201,240,.7); animation:pulse 2.4s infinite }
+.pulse.p1{ left:28%; top:38% } .pulse.p2{ left:52%; top:44% } .pulse.p3{ left:72%; top:54% }
+@keyframes pulse{ 0%{ box-shadow:0 0 0 0 rgba(76,201,240,.7) } 70%{ box-shadow:0 0 0 14px rgba(76,201,240,0) } 100%{ box-shadow:0 0 0 0 rgba(76,201,240,0) } }
+
+#fleet{ background:#fff }
+.fleet-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:24px }
+@media (max-width:1100px){ .fleet-grid{ grid-template-columns:repeat(2,1fr) } }
+@media (max-width:680px){ .fleet-grid{ grid-template-columns:1fr } }
+.fleet{ border-radius:18px; overflow:hidden; box-shadow:var(--shadow-md); background:#fff }
+.fleet img{ width:100%; height:240px; object-fit:cover; transition:transform .5s ease }
+.fleet:hover img{ transform:scale(1.06) }
+.fleet .content{ padding:22px }
+
+/* ============================
+   SUSTAINABILITY (Parallax)
+   ============================ */
+#sustainability{ padding:0; min-height:58vh; display:grid; place-items:center; color:#e9f5ff; text-align:center; background:linear-gradient(180deg, var(--navy-800), var(--navy-1000)); position:relative }
+#sustainability .overlay{ position:absolute; inset:0; background:radial-gradient(800px 300px at 20% 10%, rgba(76,201,240,.18), transparent 60%) }
+.s-bg{ position:absolute; inset:0; background:url('images/green.png') center/cover fixed; mix-blend:luminosity; opacity:.22; will-change:background-position }
+#sustainability .container{ position:relative; z-index:2; padding:80px 24px }
+#sustainability h2{ color:#eaf6ff; font-size:clamp(1.8rem,3.2vw,2.6rem) }
+#sustainability p{ color:#d5e9ff; max-width:800px; margin-inline:auto }
+
+/* ============================
+   CAREERS / CONTACT (Bubbles)
+   ============================ */
+#careers{ background:linear-gradient(180deg, #f1f6fb, #eaf3ff) }
+.cta-button{ background:linear-gradient(90deg, var(--sky-400), var(--navy-700)); color:#fff; padding:16px 26px; border-radius:999px; text-decoration:none; font-weight:800; box-shadow:var(--shadow-md) }
+
+#contact{ background:#fff }
+.contact-wrap{ display:flex; align-items:center; justify-content:center; gap:28px; flex-wrap:wrap; margin-top:18px }
+.bubble{
+  --size: 86px;
+  position:relative;
+  width:var(--size); height:var(--size);
+  display:grid; place-items:center;
+  border-radius:50%;
+  text-decoration:none;
+  color:#0b1b33;
+  background: radial-gradient(circle at 30% 25%, #ffffff, #eaf3ff 60%, #dfeafb);
+  box-shadow:
+    inset 10px 10px 18px rgba(255,255,255,.75),
+    inset -10px -10px 18px rgba(0,0,0,.06),
+    0 14px 30px rgba(0,0,0,.1);
+  border:1px solid rgba(0,0,0,.06);
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+.bubble i{ font-size:28px }
+.bubble:hover{ transform:translateY(-6px); box-shadow:
+    inset 10px 10px 18px rgba(255,255,255,.75),
+    inset -10px -10px 18px rgba(0,0,0,.06),
+    0 22px 46px rgba(0,0,0,.16) }
+.bubble:focus-visible{ outline:3px solid var(--sky-300) }
+
+/* color hints per service */
+.bubble.phone i{ color:#0e7bd8 }
+.bubble.mail i{ color:#0d5cae }
+.bubble.wa i{ color:#22c35e }
+
+/* info tooltip */
+.bubble .bubble-tip{
+  position:absolute; left:50%; transform:translate(-50%, 0) translateY(8px) scale(.98);
+  bottom:-54px; width:max-content; max-width:260px;
+  background:#0a1220; color:#e6f2ff; padding:10px 12px; border-radius:12px;
+  font-size:.95rem; line-height:1.35; text-align:center;
+  box-shadow:0 12px 30px rgba(0,0,0,.3);
+  border:1px solid rgba(255,255,255,.1);
+  opacity:0; pointer-events:none; transition:opacity .2s ease, transform .2s ease;
+}
+.bubble:hover .bubble-tip,
+.bubble:focus-visible .bubble-tip,
+.bubble.open .bubble-tip{ opacity:1; transform:translate(-50%, 0) translateY(10px) scale(1) }
+.bubble .bubble-tip:after{
+  content:""; position:absolute; top:-8px; left:50%; transform:translateX(-50%);
+  border:8px solid transparent; border-bottom-color:#0a1220;
+}
+
+/* ============================
+   FOOTER WAVE (seamless)
+   ============================ */
+#footer-reveal{
+  padding: 0;
+  --shoreline-lift: 14vh;  /* raise/lower footer box relative to foam */
+  --above-bg:#ffffff;      /* color of section above */
+  position: relative;
+  min-height: 120vh;       /* allows a nice 'arrival' into the wave */
+  background: #0a1220;
+  overflow: visible;       /* required for sticky to behave everywhere */
+  margin-top:-1px;         /* overlap to kill micro-seams */
+}
+#footer-reveal .wave{
+  position: sticky;
+  bottom: 0;
+  height: 100vh;           /* always fills viewport */
+  display: grid;
+  place-items: end center;
+  pointer-events: none;
+  z-index: 1;
+  transform: translateY(0); /* no scrub = no shifting seams */
+}
+#footer-reveal .wave video{
+  width:100%; height:100%; object-fit:cover; object-position:center bottom;
+  display:block; background:#0a1220; filter:contrast(1.04) brightness(.96);
+}
+.wave-edge{ position:absolute; top:-1px; left:0; width:100%; height:70px; z-index:2 }
+.wave-edge path{ fill:var(--above-bg) } /* perfectly matches #contact white */
+#footer-reveal .wave::after{
+  content:""; position:absolute; left:0; bottom:0; width:100%; height:64px;
+  background:linear-gradient(180deg, rgba(10,18,32,0) 0, rgba(10,18,32,.7) 70%, #0a1220 100%);
+  z-index:3;
+}
+.footer-overlay{
+  position:absolute; left:0; right:0;
+  bottom:max(12px, var(--shoreline-lift)); z-index:4;
+  display:flex; justify-content:center; padding:0 16px;
+  text-align:center; color:#e6f2ff; text-shadow:0 2px 12px rgba(0,0,0,.5);
+  opacity:0; transform:translateY(24px);
+  transition:opacity .6s ease, transform .6s ease;
+}
+.footer-overlay.show{ opacity:1; transform:none }
+.footer-box{
+  display:inline-flex; flex-direction:column; align-items:center; gap:10px;
+  background:rgba(2,12,24,.35); border:1px solid rgba(255,255,255,.18);
+  border-radius:16px; padding:16px 18px; backdrop-filter:blur(6px);
+}
+.footer-box .brand{ display:flex; align-items:center; gap:10px }
+.footer-box .brand img{ width:20px; height:20px; object-fit:contain }
+.footer-box .social a{ color:#e6f2ff; font-size:18px; margin:0 8px; text-decoration:none; opacity:.95 }
+.footer-box .social a:hover{ opacity:1 }
+.footer-legal{ color:#c7d6e6; font-size:.92rem }
+.footer-legal a{ color:#e6f2ff }
+
+/* Contact dock */
+.dock{ position:fixed; right:20px; bottom:20px; z-index:999; display:flex; flex-direction:column; align-items:flex-end; gap:10px }
+.dock__panel{ background:rgba(255,255,255,.95); border:1px solid #e7eef8; border-radius:18px; padding:10px; box-shadow:var(--shadow-lg); display:none; width:220px }
+.dock__panel.open{ display:block }
+.dock__panel a{ display:flex; align-items:center; gap:10px; padding:10px; border-radius:12px; text-decoration:none; color:var(--ink-900) }
+.dock__panel a:hover{ background:#f1f6fb }
+.dock__toggle{ width:56px; height:56px; display:grid; place-items:center; border-radius:50%; border:none; color:#fff; background:linear-gradient(135deg, var(--sky-400), var(--navy-700)); box-shadow:var(--shadow-lg); cursor:pointer }
+
+/* Reduced motion */
+@media (prefers-reduced-motion:reduce){
+  .btn, .card, .fleet img, .hero__orb{ animation:none !important; transition:none !important }
+  .footer-overlay{ opacity:1 !important; transform:none !important }
+}
+</style>
+</head>
+<body>
+  <!-- Floating logo (image-only, up to 300×300) -->
+  <!-- UPDATE PATH: put your transparent logo here -->
+  <img class="floating-logo" src="assets/logo.png" alt="Astral Wave logo" />
+
+  <!-- ================= HEADER ================= -->
+  <header class="header" id="site-header">
+    <div class="container nav" role="navigation" aria-label="Primary">
+      <a class="brand" href="#home" aria-label="ASTRAL WAVE">
+        <!-- Glass plate keeps your logo readable on dark header -->
+        <span class="brand__plate">
+          <!-- UPDATE PATH: your provided logo (PNG/SVG). The width is tuned for your art. -->
+          <img class="brand__img" src="assets/logo.png" alt="Astral Wave logo">
+        </span>
+        <span class="brand__name">ASTRAL WAVE</span>
+      </a>
+
+      <nav>
+        <button class="nav__toggle" aria-label="Toggle menu"><i class="fa-solid fa-bars"></i></button>
+        <div class="nav__links" id="menu">
+          <a href="#services">Services</a>
+          <a href="#reach">Global Reach</a>
+          <a href="#fleet">Our Fleet</a>
+          <a href="#sustainability">Sustainability</a>
+          <a href="#careers">Careers</a>
+          <a href="#contact">Contact</a>
+        </div>
+      </nav>
+
+      <a class="nav__cta" href="#contact" aria-label="Request a consultation">Request a Consultation</a>
+    </div>
+  </header>
+
+  <!-- ================= HERO ================= -->
+  <section class="hero" id="home" aria-label="Hero">
+    <div class="hero__bg" aria-hidden="true">
+      <canvas id="hero-canvas"></canvas>
+      <div class="hero__orb o1"></div>
+      <div class="hero__orb o2"></div>
+    </div>
+
+    <div class="container reveal">
+      <h1>Global Leaders in Maritime Solutions</h1>
+      <p class="lead">Delivering excellence and reliability in crew management, technical assistance, inspections, and dry-dock services worldwide.</p>
+      <div class="cta-row">
+        <a href="#contact" class="btn btn--primary"><i class="fa-solid fa-message"></i> Request a Consultation</a>
+        <a href="#services" class="btn btn--ghost"><i class="fa-solid fa-arrow-down"></i> Explore Services</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= STATS ================= -->
+  <section class="stats" aria-label="Key figures">
+    <div class="container stats-grid">
+      <div class="stat reveal"><h3 class="counter" data-target="150">0</h3><p>Vessels Managed</p></div>
+      <div class="stat reveal"><h3 class="counter" data-target="25">0</h3><p>Years of Experience</p></div>
+      <div class="stat reveal"><h3 class="counter" data-target="5000">0</h3><p>Crew Deployed</p></div>
+      <div class="stat reveal"><h3 class="counter" data-target="40">0</h3><p>Countries Served</p></div>
+    </div>
+  </section>
+
+  <!-- ================= SERVICES ================= -->
+  <section id="services" aria-label="Services">
+    <div class="container">
+      <div class="section-title reveal"><h2>Our Core Services</h2></div>
+      <div class="services-grid">
+        <article class="card reveal"><div class="icon"><i class="fas fa-users-cog"></i></div><h3>Crew Management</h3><p>Skilled, certified seafarers for all vessel types—focused on safety, continuity and performance.</p></article>
+        <article class="card reveal"><div class="icon"><i class="fas fa-tools"></i></div><h3>Technical Assistance</h3><p>From planned maintenance to complex troubleshooting—keeping your fleet in peak condition.</p></article>
+        <article class="card reveal"><div class="icon"><i class="fas fa-clipboard-check"></i></div><h3>Vessel Inspections</h3><p>Independent inspections for SIRE, TMSA and ISM compliance—clear reporting and corrective pathways.</p></article>
+        <article class="card reveal"><div class="icon"><i class="fas fa-ship"></i></div><h3>Dry Dock Management</h3><p>End-to-end planning and supervision to minimize downtime and deliver measurable value.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= REACH ================= -->
+  <section id="reach" aria-label="Global reach">
+    <div class="container">
+      <div class="section-title reveal"><h2>Our Global Reach</h2><p>Operating across major shipping lanes and ports worldwide.</p></div>
+      <div class="map-wrap reveal">
+        <!-- UPDATE PATH -->
+        <img src="images/world-map.jpeg" alt="Astral Wave global operations map" loading="lazy" decoding="async" />
+        <span class="pulse p1" aria-hidden="true"></span><span class="pulse p2" aria-hidden="true"></span><span class="pulse p3" aria-hidden="true"></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= FLEET ================= -->
+  <section id="fleet" aria-label="Vessels we manage">
+    <div class="container">
+      <div class="section-title reveal"><h2>Vessels We Manage</h2></div>
+      <div class="fleet-grid">
+        <article class="fleet reveal"><img src="images/fleet-tanker.jpg" alt="Oil tanker underway" loading="lazy"><div class="content"><h3>Oil & Chemical Tankers</h3><p>Specialized management for safe and efficient transport of liquid bulk cargo.</p></div></article>
+        <article class="fleet reveal"><img src="images/fleet-bulk-carrier.jpg" alt="Bulk carrier at sea" loading="lazy"><div class="content"><h3>Bulk Carriers</h3><p>Optimizing operations for grain, coal, ore and other dry bulk cargoes.</p></div></article>
+        <article class="fleet reveal"><img src="images/fleet-container.jpg" alt="Container ship" loading="lazy"><div class="content"><h3>Container Ships</h3><p>Reliable turnaround and schedule integrity—the backbone of global trade.</p></div></article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SUSTAINABILITY ================= -->
+  <section id="sustainability" aria-label="Sustainability commitments">
+    <div class="overlay" aria-hidden="true"></div>
+    <div class="s-bg" aria-hidden="true"></div>
+    <div class="container reveal">
+      <h2>Committed to a Greener Maritime Future</h2>
+      <p>We work to reduce emissions, protect marine ecosystems and exceed evolving regulatory standards across our fleet and operations.</p>
+    </div>
+  </section>
+
+  <!-- ================= CAREERS ================= -->
+  <section id="careers" aria-label="Careers">
+    <div class="container">
+      <div class="section-title reveal">
+        <h2>Join Our Global Team</h2>
+        <p>We’re always looking for talented people to join our crew and shore-based staff.</p>
+        <a href="#contact" class="cta-button">Apply Now</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CONTACT (Bubbles) ================= -->
+  <section id="contact" aria-label="Contact Astral Wave">
+    <div class="container">
+      <div class="section-title reveal">
+        <h2>Get In Touch</h2>
+        <p>Choose the channel that works best for you—we respond fast.</p>
+      </div>
+
+      <div class="contact-wrap">
+        <!-- PHONE -->
+        <a class="bubble phone" href="tel:+0000000000" title="+00 0000 000000">
+          <i class="fa-solid fa-phone" aria-hidden="true"></i>
+          <span class="bubble-tip"><strong>Call</strong><br>+00 0000 000000<br><span style="opacity:.8">24/7 duty line</span></span>
+        </a>
+
+        <!-- EMAIL -->
+        <a class="bubble mail" href="mailto:ops@astral-waves.com" title="ops@astral-waves.com">
+          <i class="fa-solid fa-envelope" aria-hidden="true"></i>
+          <span class="bubble-tip"><strong>Email</strong><br>ops@astral-waves.com<br><span style="opacity:.8">Operations &amp; general</span></span>
+        </a>
+
+        <!-- WHATSAPP -->
+        <a class="bubble wa" href="https://wa.me/XXXXXXXXXXX?text=Hello%20Astral%20Wave" target="_blank" rel="noopener" title="WhatsApp chat">
+          <i class="fa-brands fa-whatsapp" aria-hidden="true"></i>
+          <span class="bubble-tip"><strong>WhatsApp</strong><br>Chat now<br><span style="opacity:.8">Replace X with your number</span></span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= FOOTER WAVE ================= -->
+  <section id="footer-reveal" aria-label="Wave footer reveal">
+    <div class="wave" aria-hidden="false">
+      <svg class="wave-edge" viewBox="0 0 1440 70" preserveAspectRatio="none">
+        <path d="M0,50 C 240,10 480,70 720,35 C 960,8 1200,70 1440,50 L1440,0 L0,0 Z"></path>
+      </svg>
+
+      <!-- UPDATE PATH: your shoreline video -->
+      <video id="shoreline" autoplay muted playsinline loop preload="auto" poster="assets/footer-wave-poster.jpg">
+        <source src="assets/footer-wave2.mp4" type="video/mp4" />
+      </video>
+
+      <!-- Footer content on the shoreline -->
+      <div class="footer-overlay" id="footerOverlay">
+        <div class="footer-box">
+          <div class="brand">
+            <img src="assets/logo.png" alt="Astral Wave logo">
+            <strong>ASTRAL WAVE</strong>
+          </div>
+          <div>Head Office: 123 Mariners Ave, Limassol, CY • Reg. No. 000000</div>
+          <div class="social">
+            <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+            <a href="#" aria-label="Twitter / X"><i class="fab fa-x-twitter"></i></a>
+          </div>
+          <div class="footer-legal">© 2025 Astral Wave • <a href="#">Privacy</a> • <a href="#">Terms</a></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quick contact dock -->
+  <div class="dock" aria-live="polite">
+    <div class="dock__panel" id="dockPanel">
+      <a href="https://wa.me/XXXXXXXXXXX" target="_blank" rel="noopener"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a>
+      <a href="https://t.me/YOUR_TELEGRAM" target="_blank" rel="noopener"><i class="fa-brands fa-telegram"></i> Telegram</a>
+      <a href="mailto:ops@astral-waves.com"><i class="fa-solid fa-envelope"></i> Email Operations</a>
+      <a href="tel:+0000000000"><i class="fa-solid fa-phone"></i> Call Duty Line</a>
+    </div>
+    <button class="dock__toggle" id="dockToggle" aria-controls="dockPanel" aria-expanded="false"><i class="fa-solid fa-comments"></i></button>
+  </div>
+
+  <!-- (Optional) debug bubble: add ?debug to URL -->
+  <div id="wave-debug" style="position:fixed;left:12px;bottom:12px;background:rgba(0,0,0,.7);color:#eaf6ff;font:12px/1.3 monospace;padding:8px 10px;border-radius:8px;z-index:9999;display:none;max-width:52ch;white-space:pre-wrap"></div>
+
+<script>
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>r.querySelectorAll(s);
+
+/* ===== Header behavior + floating logo ===== */
+(() => {
+  const header=$('#site-header'), flogo=$('.floating-logo'), toggle=$('.nav__toggle'), menu=$('#menu');
+  let lastY=window.scrollY, hiding=false;
+  const onScroll=()=>{
+    const y=window.scrollY;
+    y>10 ? header.classList.add('scrolled') : header.classList.remove('scrolled');
+    if(y>lastY+6 && y>120 && !hiding){ header.classList.add('hide'); flogo.classList.add('show'); hiding=true; }
+    else if(y<lastY-6){ header.classList.remove('hide'); if(y<80) flogo.classList.remove('show'); hiding=false; }
+    lastY=y;
+  };
+  onScroll(); window.addEventListener('scroll', onScroll, {passive:true});
+  toggle?.addEventListener('click', ()=>menu.classList.toggle('open'));
+  menu?.addEventListener('click', e=>{ if(e.target.tagName==='A') menu.classList.remove('open'); });
+
+  // Scroll spy
+  const ids=['services','reach','fleet','sustainability','careers','contact'];
+  const sections=ids.map(id=>document.getElementById(id)).filter(Boolean);
+  const links=$$('.nav__links a');
+  const spy=new IntersectionObserver((ents)=>{
+    ents.forEach(en=>{
+      if(en.isIntersecting){ links.forEach(l=>l.classList.toggle('is-active', l.getAttribute('href')===`#${en.target.id}`)); }
+    });
+  }, {threshold:.55});
+  sections.forEach(s=>spy.observe(s));
+})();
+
+/* ===== Hero particles: slower + pointer interaction ===== */
+(() => {
+  const c = document.getElementById('hero-canvas');
+  if(!c) return;
+  const ctx = c.getContext('2d');
+  let w,h,dpr, stars=[], mouse={x:-9999,y:-9999,active:false};
+
+  const resize = () => {
+    dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+    w = c.clientWidth; h = c.clientHeight;
+    c.width = Math.floor(w * dpr); c.height = Math.floor(h * dpr);
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    createStars();
+  };
+
+  const createStars = () => {
+    const count = Math.floor((w*h) / 22000); // density
+    stars = new Array(count).fill(0).map(()=>({
+      x: Math.random()*w,
+      y: Math.random()*h,
+      r: Math.random()*1.5 + 0.7,                // radius
+      vx: (Math.random()*0.25 + 0.05) * (Math.random()<.5?-1:1), // slower
+      vy: Math.random()*0.12 + 0.02,
+      a: Math.random()*0.4 + 0.45,               // base alpha
+      tw: Math.random()*Math.PI*2                // twinkle phase
+    }));
+  };
+
+  const step = () => {
+    ctx.clearRect(0,0,w,h);
+    // background gradient
+    const g = ctx.createLinearGradient(0,0,0,h);
+    g.addColorStop(0,'#0b1b33'); g.addColorStop(1,'#060b15');
+    ctx.fillStyle = g; ctx.fillRect(0,0,w,h);
+
+    stars.forEach(p=>{
+      // motion
+      p.x += p.vx; p.y += p.vy;
+      if(p.x < -10) p.x = w+10; if(p.x > w+10) p.x = -10;
+      if(p.y > h+10){ p.y = -10; p.x = Math.random()*w; }
+
+      // twinkle
+      p.tw += 0.02;
+      let alpha = p.a * (0.6 + 0.4 * Math.sin(p.tw));
+
+      // pointer interaction
+      if(mouse.active){
+        const dx = p.x - mouse.x, dy = p.y - mouse.y;
+        const dist = Math.hypot(dx,dy);
+        const R = 120; // influence radius
+        if(dist < R){
+          const f = (1 - dist/R); // 0..1
+          // brighten + tiny repulsion
+          alpha = Math.min(1, alpha + f*0.6);
+          p.x += (dx/dist) * f * 0.8;
+          p.y += (dy/dist) * f * 0.8;
+        }
+      }
+
+      // draw (glow if near pointer)
+      ctx.save();
+      if(mouse.active && Math.hypot(p.x-mouse.x,p.y-mouse.y) < 120){
+        ctx.shadowColor = 'rgba(190,234,255,.9)';
+        ctx.shadowBlur = 10;
+      } else {
+        ctx.shadowBlur = 0;
+      }
+      ctx.globalAlpha = alpha;
+      ctx.fillStyle = '#cfeaff';
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2); ctx.fill();
+      ctx.restore();
+    });
+
+    requestAnimationFrame(step);
+  };
+
+  // pointer tracking
+  const setMouse = e => {
+    const rect = c.getBoundingClientRect();
+    mouse.x = (e.clientX ?? (e.touches?.[0]?.clientX || -9999)) - rect.left;
+    mouse.y = (e.clientY ?? (e.touches?.[0]?.clientY || -9999)) - rect.top;
+    mouse.active = true;
+  };
+  const clearMouse = () => { mouse.active=false; };
+
+  resize(); step();
+  window.addEventListener('resize', resize);
+  c.addEventListener('pointermove', setMouse, {passive:true});
+  c.addEventListener('pointerleave', clearMouse, {passive:true});
+  c.addEventListener('touchstart', setMouse, {passive:true});
+  c.addEventListener('touchend', clearMouse, {passive:true});
+})();
+
+/* ===== Reveal, counters, tilt ===== */
+(() => {
+  const reveals=$$('.reveal');
+  const io=new IntersectionObserver((entries,obs)=>{
+    entries.forEach(en=>{ if(en.isIntersecting){ en.target.classList.add('in'); obs.unobserve(en.target);} });
+  }, {threshold:.2});
+  reveals.forEach(el=>io.observe(el));
+
+  const fmt=new Intl.NumberFormat(); const counters=$$('.counter');
+  const co=new IntersectionObserver((entries,obs)=>{
+    entries.forEach(en=>{
+      if(!en.isIntersecting) return;
+      const el=en.target, target=+el.dataset.target; let curr=0;
+      const step=Math.max(1, Math.ceil(target/180));
+      const tick=()=>{ curr=Math.min(curr+step,target); el.textContent=fmt.format(curr); if(curr<target) requestAnimationFrame(tick); };
+      tick(); obs.unobserve(el);
+    });
+  }, {threshold:.6});
+  counters.forEach(c=>co.observe(c));
+
+  $$('.card').forEach(card=>{
+    card.addEventListener('pointermove', e=>{
+      const r=card.getBoundingClientRect(), cx=e.clientX-r.left, cy=e.clientY-r.top;
+      const rx=((cy/r.height)-.5)*-6, ry=((cx/r.width)-.5)*6;
+      card.style.transform=`rotateX(${rx}deg) rotateY(${ry}deg)`;
+    }, {passive:true});
+    card.addEventListener('pointerleave', ()=>{ card.style.transform='rotateX(0) rotateY(0)'; });
+  });
+})();
+
+/* ===== Contact bubbles: mobile-first info behaviour ===== */
+(() => {
+  $$('.bubble').forEach(b=>{
+    // First tap shows info; second tap follows link
+    let tapped = false, timer=null;
+    b.addEventListener('touchstart', (e)=>{
+      if(!tapped){
+        e.preventDefault();
+        tapped = true;
+        b.classList.add('open');
+        timer = setTimeout(()=>{ b.classList.remove('open'); tapped=false; }, 1800);
+      } else {
+        if(timer) clearTimeout(timer);
+        tapped = false; // allow default navigation
+        window.location.href = b.getAttribute('href');
+      }
+    }, {passive:false});
+  });
+})();
+
+/* ===== Sustainability parallax ===== */
+(() => {
+  const sBg=$('.s-bg'); if(!sBg) return;
+  window.addEventListener('scroll', ()=>{ sBg.style.backgroundPosition=`center ${-window.scrollY*0.15}px`; }, {passive:true});
+})();
+
+/* ===== Floating contact dock ===== */
+(() => {
+  const btn=$('#dockToggle'), panel=$('#dockPanel');
+  btn?.addEventListener('click', ()=>{ const open=panel.classList.toggle('open'); btn.setAttribute('aria-expanded', open?'true':'false'); });
+})();
+
+/* ===== Footer wave overlay reveal + flourish ===== */
+(() => {
+  const sec=$('#footer-reveal'), wave=sec?.querySelector('.wave'), vid=$('#shoreline'), overlay=$('#footerOverlay'), box=$('#wave-debug');
+  if(!sec||!wave||!vid||!overlay) return;
+  try{ vid.muted=true; vid.playsInline=true; }catch(e){}
+
+  const io=new IntersectionObserver(([en])=>{
+    if(!en) return;
+    overlay.classList.toggle('show', en.intersectionRatio>0.55);
+  }, {threshold:[0,.25,.55,.75,1]});
+  io.observe(wave);
+
+  let flourished=false;
+  const onBottom=()=>{
+    const atBottom = Math.ceil(window.scrollY + window.innerHeight) >= Math.floor(document.documentElement.scrollHeight);
+    if(atBottom && !flourished){
+      flourished=true; wave.style.transition='transform .5s ease'; wave.style.transform='translateY(3%)';
+      setTimeout(()=>{ wave.style.transform='translateY(0%)'; wave.style.transition=''; }, 550);
+    } else if(!atBottom){ flourished=false; }
+  };
+  window.addEventListener('scroll', onBottom, {passive:true});
+
+  const fallback=()=>{ const poster=vid.getAttribute('poster'); if(poster) wave.style.background=`url('${poster}') center/cover no-repeat`; };
+  setTimeout(()=>{ vid.play().catch(fallback); }, 0);
+})();
+</script>
+</body>
+</html>
