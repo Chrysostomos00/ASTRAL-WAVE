@@ -71,7 +71,7 @@ section{padding:100px 0; position:relative; overflow:hidden}
 .section-title p { max-width: 600px; margin: 12px auto 0; color: var(--ink-600); }
 
 /* ============================
-   HEADER: Context-Aware & Responsive
+   HEADER & MENU (Refined)
    ============================ */
 .header{
   position:fixed; inset:0 0 auto 0; height:var(--header-h); z-index:1000;
@@ -92,7 +92,7 @@ section{padding:100px 0; position:relative; overflow:hidden}
 
 .nav{ display:flex; align-items:center; justify-content:space-between; height:100% }
 
-/* BRAND: Hidden at top (even on mobile), fades in on scroll */
+/* BRAND: Hidden on top, fades in on scroll */
 .brand{ display:flex; align-items:center; gap:12px; opacity: 1; transition: opacity .4s ease, transform .4s ease; }
 .header:not(.scrolled) .brand {
   opacity: 0; 
@@ -100,7 +100,7 @@ section{padding:100px 0; position:relative; overflow:hidden}
   pointer-events: none; 
 }
 
-/* NAV LOGO */
+/* NAV LOGO (Nav only) */
 .brand__img{ 
     height: 54px; 
     width:auto; 
@@ -109,7 +109,18 @@ section{padding:100px 0; position:relative; overflow:hidden}
     display: block;
 }
 
-/* NAV LINKS - DESKTOP */
+/* MENU TOGGLE (Mobile) */
+.nav__toggle{ 
+  display:none; 
+  border:none; 
+  background:transparent; 
+  font-size:26px; 
+  color:#fff; 
+  z-index: 2001; /* Above the overlay menu */
+  cursor: pointer; 
+}
+
+/* NAV LINKS (Desktop Default) */
 .nav__links{display:flex; gap:32px; align-items:center}
 .nav__links a{ 
     font-weight:500; font-size: 0.95rem; color: rgba(255,255,255,0.85); letter-spacing:.2px; position:relative; padding:6px 0; 
@@ -129,36 +140,56 @@ section{padding:100px 0; position:relative; overflow:hidden}
 }
 .nav__cta:hover { transform: translateY(-2px); background: #fff; }
 
-.nav__toggle{ display:none; border:none; background:transparent; font-size:26px; color:#fff; z-index: 1002; cursor: pointer; }
-
-/* MOBILE MENU OPTIMIZATIONS */
+/* ----------------------------------
+   MOBILE MENU FIX (Solid Overlay)
+---------------------------------- */
 @media (max-width:900px){
-  /* The Menu Container */
+  /* The Toggler */
+  .nav__toggle{ display:block; }
+  .nav__cta { display: none; }
+
+  /* The Full Screen Overlay */
   .nav__links{ 
-      position:fixed; 
-      inset:0; /* Full screen */
-      background: rgba(2,9,19, 0.98); /* Solid dark bg */
-      backdrop-filter: blur(10px);
-      flex-direction:column; 
-      justify-content:center; 
-      gap:32px; 
-      opacity:0; 
-      pointer-events:none; 
-      transform: translateX(100%); /* Slide out */
-      transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); 
-      z-index: 1001; 
+      position: fixed; /* Fixed relative to viewport, not header */
+      inset: 0;
+      width: 100%;
+      height: 100vh; /* Fallback */
+      height: 100dvh; /* Dynamic viewport height */
+      background: #020913; /* SOLID COLOR - No transparency issues */
+      flex-direction: column; 
+      justify-content: center; 
+      align-items: center;
+      gap: 32px; 
+      opacity: 0; 
+      pointer-events: none; 
+      transform: translateY(-20px); 
+      transition: opacity 0.3s ease, transform 0.3s ease; 
+      z-index: 2000; /* Highest priority */
   }
   
-  /* Menu Open State */
+  /* Active State */
   .nav__links.open{ 
-      opacity:1; 
-      pointer-events:auto; 
-      transform: translateX(0); /* Slide in */
+      opacity: 1; 
+      pointer-events: auto; 
+      transform: translateY(0); 
   }
 
-  .nav__links a { font-size: 1.5rem; font-weight: 600; }
-  .nav__cta{ display:none } 
-  .nav__toggle{ display:block; }
+  .nav__links a { 
+    font-size: 1.5rem; 
+    font-weight: 600; 
+    color: #fff;
+    opacity: 0; /* Animation setup */
+    transform: translateY(10px);
+    transition: 0.4s ease;
+  }
+  
+  /* Staggered entrance animation for links */
+  .nav__links.open a:nth-child(1) { transition-delay: 0.1s; opacity: 1; transform: translateY(0); }
+  .nav__links.open a:nth-child(2) { transition-delay: 0.15s; opacity: 1; transform: translateY(0); }
+  .nav__links.open a:nth-child(3) { transition-delay: 0.2s; opacity: 1; transform: translateY(0); }
+  .nav__links.open a:nth-child(4) { transition-delay: 0.25s; opacity: 1; transform: translateY(0); }
+  .nav__links.open a:nth-child(5) { transition-delay: 0.3s; opacity: 1; transform: translateY(0); }
+  .nav__links.open a:nth-child(6) { transition-delay: 0.35s; opacity: 1; transform: translateY(0); }
 }
 
 /* ============================
@@ -172,7 +203,6 @@ section{padding:100px 0; position:relative; overflow:hidden}
 .hero__bg{ position:absolute; inset:0; z-index:-1; overflow:hidden }
 #hero-canvas{ position:absolute; inset:0; width:100%; height:100%; display:block; opacity: 0.7; }
 
-/* HERO LOGO: Responsive Sizing */
 .hero__logo {
   width: clamp(180px, 35vw, 300px); 
   margin: 0 auto 32px;
@@ -281,18 +311,17 @@ section{padding:100px 0; position:relative; overflow:hidden}
     scroll-snap-type: x mandatory;
     gap: 16px;
     padding-bottom: 24px;
-    /* Add extra padding on sides so cards aren't flush to edge */
     margin-inline: -12px;
     padding-inline: 24px;
-    -webkit-overflow-scrolling: touch; /* Smooth scrolling iOS */
-    scrollbar-width: none; /* Hide scrollbar Firefox */
+    -webkit-overflow-scrolling: touch; 
+    scrollbar-width: none; 
   }
-  .fleet-grid::-webkit-scrollbar { display: none; /* Hide scrollbar Chrome/Safari */ }
+  .fleet-grid::-webkit-scrollbar { display: none; }
 
   .fleet {
-    min-width: 85vw; /* Shows most of the card, slight peek at next */
+    min-width: 85vw;
     scroll-snap-align: center;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.08); /* Consistent shadow */
+    box-shadow: 0 10px 20px rgba(0,0,0,0.08); 
   }
 }
 
@@ -304,7 +333,7 @@ section{padding:100px 0; position:relative; overflow:hidden}
 .fleet .content h3 { font-size: 1.5rem; margin-bottom: 8px; }
 
 /* ============================
-   WHY CHOOSE US - (With Mobile Swiper)
+   WHY CHOOSE US (Mobile Swiper)
    ============================ */
 #why-us { background: linear-gradient(180deg, #f1f6fb, #eaf3ff); }
 .why-us-grid { 
@@ -315,7 +344,6 @@ section{padding:100px 0; position:relative; overflow:hidden}
   align-items: start;
 }
 
-/* Mobile Why Us: Horizontal Snap Swiper */
 @media (max-width: 1000px) {
   .why-us-grid {
     display: flex;
@@ -331,9 +359,9 @@ section{padding:100px 0; position:relative; overflow:hidden}
   .why-us-grid::-webkit-scrollbar { display: none; }
   
   .why-us-item {
-    min-width: 260px; /* Set fixed width for swiper cards */
+    min-width: 260px;
     scroll-snap-align: center;
-    background: #fff; /* Add card bg for swiper context */
+    background: #fff; 
     border-radius: 20px;
     box-shadow: var(--shadow-md);
     padding: 30px 20px;
@@ -345,15 +373,30 @@ section{padding:100px 0; position:relative; overflow:hidden}
 .why-us-item h3 { font-size: 1.05rem; color: var(--navy-800); margin-bottom: 10px; font-weight: 700; line-height: 1.3; }
 .why-us-item p { color: var(--ink-600); font-size: 0.9rem; line-height: 1.6; margin: 0; }
 
-
 /* ============================
-   SUSTAINABILITY
+   SUSTAINABILITY (Fixed Blur & Zoom Issue)
    ============================ */
 #sustainability{ 
     padding:100px 0; display:flex; align-items: center; justify-content: center; text-align:center;
     background: #0b1b33; color: #fff;
+    overflow: hidden; /* Ensure background doesn't bleed */
 }
-.s-bg{ position:absolute; inset:0; background:url('images/green.png') center/cover no-repeat fixed; opacity:.25; filter: saturate(0.5); }
+/* 
+   FIXED: Using 'scroll' instead of 'fixed' for the background attachment by default.
+   This prevents the "zoomed in blur" on mobile devices.
+*/
+.s-bg{ 
+    position:absolute; inset:0; 
+    background:url('images/green.png') center/cover no-repeat;
+    opacity: 0.4; /* Slightly increased visibility */
+    /* Remove heavy saturation to reduce artifacts on low-res images */
+}
+
+/* Only enable Parallax on Desktop where it works well */
+@media (min-width: 1024px) {
+    .s-bg { background-attachment: fixed; }
+}
+
 #sustainability .container{ position:relative; z-index:2; }
 #sustainability h2 { color: #fff; text-shadow: 0 4px 10px rgba(0,0,0,0.5); }
 #sustainability p { color: var(--sky-200); max-width: 700px; margin: 0 auto; font-size: 1.1rem; }
@@ -388,7 +431,6 @@ section{padding:100px 0; position:relative; overflow:hidden}
     z-index: 20;
 }
 .bubble:hover .bubble-tip { opacity: 1; bottom: -50px; }
-
 
 /* ============================
    FOOTER (Mobile Optimized)
@@ -458,12 +500,10 @@ section{padding:100px 0; position:relative; overflow:hidden}
   <header class="header" id="site-header">
     <div class="container nav">
       <a class="brand" href="#home" aria-label="ASTRAL WAVE">
-        <!-- Logo Only (No text), Bigger -->
         <img class="brand__img" src="assets/logo.png" alt="Astral Wave logo">
       </a>
 
       <nav>
-        <!-- Toggling handled by JS -->
         <button class="nav__toggle" aria-label="Toggle menu"><i class="fa-solid fa-bars"></i></button>
         <div class="nav__links" id="menu">
           <a href="#services">Services</a>
@@ -649,7 +689,6 @@ section{padding:100px 0; position:relative; overflow:hidden}
   <section id="fleet">
     <div class="container">
       <div class="section-title reveal"><h2>Vessels We Inspect</h2></div>
-      <!-- Class change for swiper effect handled in CSS media queries -->
       <div class="fleet-grid">
         <article class="fleet reveal">
             <img src="images/fleet-tanker.jpg" alt="Oil tanker" loading="lazy">
@@ -671,7 +710,6 @@ section{padding:100px 0; position:relative; overflow:hidden}
   <section id="why-us">
     <div class="container">
       <div class="section-title reveal"><h2>Why Choose Us?</h2></div>
-      <!-- Snap swiper enabled on mobile via CSS -->
       <div class="why-us-grid">
         <div class="why-us-item reveal">
           <div class="icon"><i class="fas fa-ship"></i></div>
@@ -798,13 +836,11 @@ const navLinks = document.querySelector('.nav__links');
 const toggle = document.querySelector('.nav__toggle');
 
 toggle.addEventListener('click', () => navLinks.classList.toggle('open'));
-// Close menu when clicking links
 navLinks.addEventListener('click', (e) => {
   if(e.target.tagName === 'A') navLinks.classList.remove('open');
 });
 
-// Scroll Listener: Activates Glass Header & NAV LOGO
-// On mobile, the hero logo dominates. The nav logo stays hidden until we scroll past 600px.
+// Scroll Listener: Activates Glass Header
 window.addEventListener('scroll', () => {
   if (window.scrollY > 600) {
     header.classList.add('scrolled');
@@ -827,7 +863,6 @@ if (canvas) {
 
   const init = () => {
     particles = [];
-    // Mobile optimization: fewer particles
     const divisor = window.innerWidth < 700 ? 15000 : 12000;
     const count = Math.floor(w * h / divisor); 
     for(let i=0; i < count; i++) {
