@@ -300,11 +300,40 @@ section{padding:100px 0; position:relative; overflow:hidden}
    REACH (Map)
    ============================ */
 #reach{ background:var(--sand-50); }
-.map-wrap{ position:relative; border-radius:24px; overflow:hidden; box-shadow:var(--shadow-lg); background: #dce7f3; }
-.map-wrap img{ width:100%; height:auto; display: block; mix-blend-mode: multiply; }
-.pulse{ position:absolute; width:14px; height:14px; border-radius:50%; background:var(--navy-600); box-shadow: 0 0 0 3px rgba(255,255,255,0.8); z-index: 2; }
-.pulse::after { content:''; position: absolute; inset: -4px; border: 1px solid var(--navy-600); border-radius: 50%; animation: ping 2s infinite; opacity: 0.8; }
-.pulse.p1{ left:28%; top:38% } .pulse.p2{ left:52%; top:44% } .pulse.p3{ left:72%; top:54% }
+.map-wrap{ 
+    position:relative; border-radius:24px; overflow:hidden; 
+    box-shadow:var(--shadow-lg); background: #020913;
+    line-height: 0;
+}
+.map-wrap img{ width:100%; height:auto; display: block; opacity: 0.85; }
+.pulse{ 
+    position:absolute; width:10px; height:10px; border-radius:50%; 
+    background:var(--sky-400); box-shadow: 0 0 10px var(--sky-400); 
+    z-index: 2; transform: translate(-50%, -50%); 
+}
+.pulse::after { 
+    content:''; position: absolute; inset: -4px; 
+    border: 1px solid var(--sky-400); border-radius: 50%; 
+    animation: ping 2s infinite; opacity: 0.8; 
+}
+
+/* RESPONSIVE POINT POSITIONING */
+/* Coordinates precisely adjusted for the World Night Lights map projection */
+.p-panama { left: 26%; top: 42%; }
+.p-houston { left: 25%; top: 33.6%; }
+.p-netherlands { left: 51%; top: 21.8%; }
+.p-italy { left: 54%; top: 28%; }
+.p-greece { left: 56.5%; top: 28%; }
+.p-gibraltar { left: 48.3%; top: 31%; }
+.p-turkey { left: 58.5%; top: 29.5%; }
+.p-cyprus { left: 59%; top: 31.3%; }
+.p-suez { left: 58.8%; top: 33%; }
+.p-ustluga { left: 57%; top: 16.5%; }
+.p-dubai { left: 65.5%; top: 36.2%; }
+.p-singapore { left: 78.5%; top: 49%; }
+.p-china { left: 80.8%; top: 33.5%; }
+.p-india { left: 71.4%; top: 42%; }
+
 @keyframes ping{ 0%{ transform: scale(1); opacity: 0.8; } 100%{ transform: scale(3); opacity: 0; } }
 
 /* ============================
@@ -340,7 +369,7 @@ section{padding:100px 0; position:relative; overflow:hidden}
 .fleet img{ width:100%; height:260px; object-fit:cover; transition:transform .8s ease }
 .fleet:hover img{ transform:scale(1.05) }
 .fleet .content{ padding:30px 24px }
-.fleet .content h3 { font-size: 1.5rem; margin-bottom: 8px; }
+.fleet .content h3 { font-size: 1.5rem; margin-bottom: 0px; text-align: center; }
 
 /* ============================
    WHY CHOOSE US (Mobile Swiper)
@@ -440,7 +469,7 @@ section{padding:100px 0; position:relative; overflow:hidden}
 .bubble:hover .bubble-tip { opacity: 1; bottom: -50px; }
 
 /* ============================
-   FOOTER (Mobile Optimized)
+   FOOTER (Enhanced)
    ============================ */
 .footer-finale {
     position: relative; 
@@ -474,7 +503,7 @@ section{padding:100px 0; position:relative; overflow:hidden}
   background:rgba(255, 255, 255, 0.05); 
   border:1px solid rgba(255,255,255,.15);
   backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-  padding: 40px 60px; 
+  padding: 50px 70px; 
   border-radius: 24px; text-align: center;
   box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
   color: #fff; max-width: 500px;
@@ -484,7 +513,9 @@ section{padding:100px 0; position:relative; overflow:hidden}
   .footer-box{ width: 90%; padding: 30px 20px; }
 }
 
-.footer-logo-sm { width: 40px; height: auto; margin: 0 auto 16px; display: block; filter: brightness(0) invert(1); }
+/* BIGGER FOOTER LOGO */
+.footer-logo-sm { width: 90px; height: auto; margin: 0 auto 16px; display: block; filter: brightness(0) invert(1); }
+
 .social-links a { display: inline-flex; width: 40px; height: 40px; align-items: center; justify-content: center; border-radius: 50%; background: rgba(255,255,255,0.1); margin: 0 8px; transition: 0.3s; font-size: 1.1rem; }
 .social-links a:hover { background: var(--sky-400); color: var(--navy-1000); transform: translateY(-3px); }
 
@@ -552,7 +583,7 @@ section{padding:100px 0; position:relative; overflow:hidden}
   <!-- ================= STATS ================= -->
   <section class="stats" aria-label="Key figures">
     <div class="container stats-grid">
-      <div class="stat reveal"><h3 class="counter" data-target="150">0</h3><p>Vessels Inspected</p></div>
+      <div class="stat reveal"><h3 class="counter" data-target="75">0</h3><p>Vessels Inspected</p></div>
       <div class="stat reveal"><h3 class="counter" data-target="15">0</h3><p>Years of Experience</p></div>
       <div class="stat reveal"><h3 class="counter" data-target="16">0</h3><p>Countries Served</p></div>
     </div>
@@ -689,10 +720,26 @@ section{padding:100px 0; position:relative; overflow:hidden}
   <!-- ================= REACH ================= -->
   <section id="reach">
     <div class="container">
-      <div class="section-title reveal"><h2>Our Global Reach</h2><p>Operating across major shipping lanes and ports worldwide.</p></div>
+      <div class="section-title reveal"><h2>Our Global Reach</h2><p>Expert attendance and technical support at the world’s most critical maritime hubs.</p></div>
       <div class="map-wrap reveal">
         <img src="images/world-map.webp" alt="Astral Wave global operations map" loading="lazy" />
-        <span class="pulse p1"></span><span class="pulse p2"></span><span class="pulse p3"></span>
+        
+        <!-- Precision Pin Locations -->
+        <span class="pulse p-panama" title="Panama"></span>
+        <span class="pulse p-houston" title="US Gulf Coast Hub"></span>
+        <span class="pulse p-netherlands" title="Netherlands / North Europe"></span>
+        <span class="pulse p-italy" title="Italy"></span>
+        <span class="pulse p-greece" title="Greece Hub"></span>
+        <span class="pulse p-gibraltar" title="Gibraltar / Med Hub"></span>
+        <span class="pulse p-turkey" title="Turkey"></span>
+        <span class="pulse p-cyprus" title="Cyprus (Limassol)"></span>
+        <span class="pulse p-suez" title="Suez Canal Hub"></span>
+        <span class="pulse p-ustluga" title="Ust-Luga"></span>
+        <span class="pulse p-dubai" title="Dubai / ME Hub"></span>
+        <span class="pulse p-singapore" title="Singapore Hub"></span>
+        <span class="pulse p-china" title="China / Asia Hub"></span>
+        <span class="pulse p-india" title="India"></span>
+
       </div>
     </div>
   </section>
@@ -708,11 +755,11 @@ section{padding:100px 0; position:relative; overflow:hidden}
         </article>
         <article class="fleet reveal">
             <img src="images/fleet-bulk-carrier.webp" alt="Bulk carrier" loading="lazy">
-            <div class="content"><h3>Bulk Carriers</h3><p>Optimizing operations for grain, coal, ore and other dry bulk cargoes.</p></div>
+            <div class="content"><h3>Bulk Carriers</h3></div>
         </article>
         <article class="fleet reveal">
             <img src="images/fleet-container.webp" alt="Container ship" loading="lazy">
-            <div class="content"><h3>Container Ships</h3><p>Reliable turnaround and schedule integrity—the backbone of global trade.</p></div>
+            <div class="content"><h3>Container Ships</h3></div>
         </article>
       </div>
     </div>
@@ -781,19 +828,19 @@ section{padding:100px 0; position:relative; overflow:hidden}
       </div>
 
       <div class="contact-wrap">
-        <a class="bubble" href="tel:+0000000000">
+        <a class="bubble" href="tel:+357 96 829277">
           <i class="fa-solid fa-phone"></i>
           <span class="bubble-tip">
             <strong>Call</strong><br>+00 0000 000000<br>24/7 duty line
           </span>
         </a>
-        <a class="bubble" href="mailto:ops@astral-waves.com">
+        <a class="bubble" href="mailto:info@astral-waves.com">
           <i class="fa-solid fa-envelope"></i>
           <span class="bubble-tip">
-             <strong>Email</strong><br>ops@astral-waves.com
+             <strong>Email</strong><br>info@astral-waves.com
           </span>
         </a>
-        <a class="bubble" href="https://wa.me/">
+        <a class="bubble" href="https://wa.me/96 829277">
           <i class="fa-brands fa-whatsapp"></i>
           <span class="bubble-tip">
              <strong>WhatsApp</strong><br>Chat now
@@ -814,10 +861,8 @@ section{padding:100px 0; position:relative; overflow:hidden}
     <div class="footer-content">
       <div class="footer-box">
         <img src="assets/logo.png" alt="logo" class="footer-logo-sm">
-        <div style="font-size:1.1rem; font-weight:600; margin-bottom:5px">Astral Wave</div>
-        <div style="font-size:0.95rem; opacity:0.9; margin-bottom:10px; line-height:1.5;">
-            Head Office: 123 Mariners Ave, Limassol, CY<br>
-            Reg. No. 000000
+        <div style="font-size:1rem; opacity:0.8; margin-bottom:20px;">
+            Professional Marine Consultancy & Operational Support
         </div>
         <div class="social-links" style="margin-bottom:20px; margin-top:10px;">
           <a href="#"><i class="fab fa-linkedin-in"></i></a>
@@ -883,7 +928,7 @@ window.addEventListener('scroll', () => {
   }
 });
 
-/* ================= HERO PARTICLES ================= */
+/* ================= HERO PARTICLES (Untouched & Responsive) ================= */
 const canvas = document.getElementById('hero-canvas');
 if (canvas) {
   const ctx = canvas.getContext('2d');
